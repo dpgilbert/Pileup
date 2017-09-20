@@ -18,18 +18,63 @@ void PileupCorrection::ScanChain (TTree * tree, const char* outname, int MaxEven
   const float RelCorrsMin = 0;
   const float RelCorrsMax = 1;
 
+  const int nPUbins = 12;
+  const float PUmin = 0;
+  const float PUmax = 60;
+
   TH1::SetDefaultSumw2(true);
 
   // TProfiles (standard only)
   TProfile p_pt_EA("p_pt_EA","EA Corrections by p_{T}",20,0,100);
-  TProfile p_npv_EA("p_npv_EA","EA Corrections by N_{PV}",12,0,60);
   TProfile p_pt_dB("p_pt_dB","#Delta#beta Corrections by p_{T}",20,0,100);
-  TProfile p_npv_dB("p_npv_dB","#Delta#beta Corrections by N_{PV}",12,0,60);
-  TProfile p_npv_rho_all("p_npv_rho_all","#rho_{all} by N_{PV}",12,0,60);
-  TProfile p_npv_rho_ctr("p_npv_rho_ctr","#rho_{ctr} by N_{PV}",12,0,60);
+  TProfile p_npv_rho_all("p_npv_rho_all","#rho_{all} by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_rho_ctr("p_npv_rho_ctr","#rho_{ctr} by N_{PV}",nPUbins,PUmin,PUmax);
 
-  TH1F h_npv_over_EA("h_npv_over_EA","Fraction of EA Overcorrections by N_{PV}",12,0,60);
-  TH1F h_npv_over_dB("h_npv_over_dB","Fraction of #Delta#beta Overcorrections by N_{PV}",12,0,60);
+  TProfile p_npv_incl_EA("p_npv_incl_EA","EA Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_incl_dB("p_npv_incl_dB","#Delta#beta Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_incl_neut("p_npv_incl_neut","Neut Isolation by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_incl_EA_st("p_npv_incl_EA_st","EA Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_incl_dB_st("p_npv_incl_dB_st","#Delta#beta Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_incl_neut_st("p_npv_incl_neut_st","Neut Isolation by N_{PV}",nPUbins,PUmin,PUmax);
+
+  TProfile p_npv_0p8_EA("p_npv_0p8_EA","EA Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_1p3_EA("p_npv_1p3_EA","EA Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p0_EA("p_npv_2p0_EA","EA Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p2_EA("p_npv_2p2_EA","EA Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p5_EA("p_npv_2p5_EA","EA Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+
+  TProfile p_npv_0p8_dB("p_npv_0p8_dB","#Delta#beta Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_1p3_dB("p_npv_1p3_dB","#Delta#beta Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p0_dB("p_npv_2p0_dB","#Delta#beta Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p2_dB("p_npv_2p2_dB","#Delta#beta Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p5_dB("p_npv_2p5_dB","#Delta#beta Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+
+  TProfile p_npv_0p8_EA_st("p_npv_0p8_EA_st","EA Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_1p3_EA_st("p_npv_1p3_EA_st","EA Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p0_EA_st("p_npv_2p0_EA_st","EA Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p2_EA_st("p_npv_2p2_EA_st","EA Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p5_EA_st("p_npv_2p5_EA_st","EA Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+
+  TProfile p_npv_0p8_dB_st("p_npv_0p8_dB_st","#Delta#beta Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_1p3_dB_st("p_npv_1p3_dB_st","#Delta#beta Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p0_dB_st("p_npv_2p0_dB_st","#Delta#beta Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p2_dB_st("p_npv_2p2_dB_st","#Delta#beta Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p5_dB_st("p_npv_2p5_dB_st","#Delta#beta Corrections by N_{PV}",nPUbins,PUmin,PUmax);
+
+  TProfile p_npv_0p8_neut("p_npv_0p8_neut","Neutral Isolation by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_1p3_neut("p_npv_1p3_neut","Neutral Isolation by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p0_neut("p_npv_2p0_neut","Neutral Isolation by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p2_neut("p_npv_2p2_neut","Neutral Isolation by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p5_neut("p_npv_2p5_neut","Neutral Isolation by N_{PV}",nPUbins,PUmin,PUmax);
+  
+  TProfile p_npv_0p8_neut_st("p_npv_0p8_neut_st","Neutral Isolation by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_1p3_neut_st("p_npv_1p3_neut_st","Neutral Isolation by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p0_neut_st("p_npv_2p0_neut_st","Neutral Isolation by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p2_neut_st("p_npv_2p2_neut_st","Neutral Isolation by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_2p5_neut_st("p_npv_2p5_neut_st","Neutral Isolation by N_{PV}",nPUbins,PUmin,PUmax);
+
+  TH1F h_npv_over_EA("h_npv_over_EA","Fraction of EA Overcorrections by N_{PV}",nPUbins,PUmin,PUmax);
+  TH1F h_npv_over_dB("h_npv_over_dB","Fraction of #Delta#beta Overcorrections by N_{PV}",nPUbins,PUmin,PUmax);
   // use nEntriesByNpv array defined below as denom
   int nOverEA[13] = {0};
   int nOverdB[13] = {0};
@@ -49,8 +94,8 @@ void PileupCorrection::ScanChain (TTree * tree, const char* outname, int MaxEven
   int nEntriesByNpv[13] = {0};
   vector<vector<float> > EA_corrs_byNpv(13,temp);
   vector<vector<float> > dB_corrs_byNpv(13,temp);
-  TH1F h_median_EA("h_median_EA","Median Effective Area Correction by Number of Pileup Vertices",12,0,60);
-  TH1F h_median_dB("h_median_dB","Median #Delta#beta Correction by Number of Pileup Vertices",12,0,60);
+  TH1F h_median_EA("h_median_EA","Median Effective Area Correction by Number of Pileup Vertices",nPUbins,PUmin,PUmax);
+  TH1F h_median_dB("h_median_dB","Median #Delta#beta Correction by Number of Pileup Vertices",nPUbins,PUmin,PUmax);
 
   TH1F h_diff_0p8_EA("h_diff_0p8_EA","Neutral MiniIso - Effective Area for |#eta| < 0.800", nIsoDiffBins,IsoDiffMin,IsoDiffMax);
   TH1F h_diff_1p3_EA("h_diff_1p3_EA","Neutral MiniIso - Effective Area for 0.800 < |#eta| < 1.300", nIsoDiffBins,IsoDiffMin,IsoDiffMax);
@@ -71,8 +116,8 @@ void PileupCorrection::ScanChain (TTree * tree, const char* outname, int MaxEven
 
   vector<vector<float> > EA_corrs_byNpv_rel(13,temp);
   vector<vector<float> > dB_corrs_byNpv_rel(13,temp);
-  TH1F h_median_EA_rel("h_median_EA_rel","Median Effective Area Correction by Number of Pileup Vertices",12,0,60);
-  TH1F h_median_dB_rel("h_median_dB_rel","Median #Delta#beta Correction by Number of Pileup Vertices",12,0,60);
+  TH1F h_median_EA_rel("h_median_EA_rel","Median Effective Area Correction by Number of Pileup Vertices",nPUbins,PUmin,PUmax);
+  TH1F h_median_dB_rel("h_median_dB_rel","Median #Delta#beta Correction by Number of Pileup Vertices",nPUbins,PUmin,PUmax);
 
   //////////////////
   // Standard Iso //
@@ -85,8 +130,8 @@ void PileupCorrection::ScanChain (TTree * tree, const char* outname, int MaxEven
 
   vector<vector<float> > EA_corrs_byNpv_st(13,temp);
   vector<vector<float> > dB_corrs_byNpv_st(13,temp);
-  TH1F h_median_EA_st("h_median_EA_st","Median Effective Area Correction by Number of Pileup Vertices",12,0,60);
-  TH1F h_median_dB_st("h_median_dB_st","Median #Delta#beta Correction by Number of Pileup Vertices",12,0,60);
+  TH1F h_median_EA_st("h_median_EA_st","Median Effective Area Correction by Number of Pileup Vertices",nPUbins,PUmin,PUmax);
+  TH1F h_median_dB_st("h_median_dB_st","Median #Delta#beta Correction by Number of Pileup Vertices",nPUbins,PUmin,PUmax);
 
   TH1F h_diff_0p8_EA_st("h_diff_0p8_EA_st","Neutral #DeltaR=0.3 Iso - Effective Area for |#eta| < 0.800", nIsoDiffBins,IsoDiffMin,IsoDiffMax);
   TH1F h_diff_1p3_EA_st("h_diff_1p3_EA_st","Neutral #DeltaR=0.3 Iso - Effective Area for 0.800 < |#eta| < 1.300", nIsoDiffBins,IsoDiffMin,IsoDiffMax);
@@ -107,8 +152,8 @@ void PileupCorrection::ScanChain (TTree * tree, const char* outname, int MaxEven
 
   vector<vector<float> > EA_corrs_byNpv_rel_st(13,temp);
   vector<vector<float> > dB_corrs_byNpv_rel_st(13,temp);
-  TH1F h_median_EA_rel_st("h_median_EA_rel_st","Median Effective Area Correction by Number of Pileup Vertices",12,0,60);
-  TH1F h_median_dB_rel_st("h_median_dB_rel_st","Median #Delta#beta Correction by Number of Pileup Vertices",12,0,60);
+  TH1F h_median_EA_rel_st("h_median_EA_rel_st","Median Effective Area Correction by Number of Pileup Vertices",nPUbins,PUmin,PUmax);
+  TH1F h_median_dB_rel_st("h_median_dB_rel_st","Median #Delta#beta Correction by Number of Pileup Vertices",nPUbins,PUmin,PUmax);
 
   const int nEvents = tree->GetEntries();
   const int event_max = MaxEvents < 0 ? nEvents : min(MaxEvents,nEvents);
@@ -197,36 +242,71 @@ void PileupCorrection::ScanChain (TTree * tree, const char* outname, int MaxEven
       // TProfiles
       p_pt_EA.Fill(cand_pt,correction_EA_st,w_);
       p_pt_dB.Fill(cand_pt,correction_dB_st,w_);
-      p_npv_EA.Fill(nPUvertices,correction_EA_st,w_);
-      p_npv_dB.Fill(nPUvertices,correction_dB_st,w_);
       p_npv_rho_all.Fill(nPUvertices,rho_all,w_);
       p_npv_rho_ctr.Fill(nPUvertices,rho_ctr,w_);
+
+      p_npv_incl_EA.Fill(nPUvertices, correction_EA, w_);
+      p_npv_incl_dB.Fill(nPUvertices, correction_dB, w_);
+      p_npv_incl_EA_st.Fill(nPUvertices, correction_EA_st, w_);
+      p_npv_incl_dB_st.Fill(nPUvertices, correction_dB_st, w_);
+      p_npv_incl_neut.Fill(nPUvertices, neut_iso, w_);
+      p_npv_incl_neut_st.Fill(nPUvertices, neut_iso_st, w_);
 
       if (cand_eta < 0.8) {
 	h_diff_0p8_EA.Fill(neut_iso - correction_EA, w_);
 	h_diff_0p8_dB.Fill(neut_iso - correction_dB, w_);
 	h_diff_0p8_EA_st.Fill(neut_iso_st - correction_EA_st, w_);
 	h_diff_0p8_dB_st.Fill(neut_iso_st - correction_dB_st, w_);
+	p_npv_0p8_EA.Fill(nPUvertices, correction_EA, w_);
+	p_npv_0p8_dB.Fill(nPUvertices, correction_dB, w_);
+	p_npv_0p8_EA_st.Fill(nPUvertices, correction_EA_st, w_);
+	p_npv_0p8_dB_st.Fill(nPUvertices, correction_dB_st, w_);
+	p_npv_0p8_neut.Fill(nPUvertices, neut_iso, w_);
+	p_npv_0p8_neut_st.Fill(nPUvertices, neut_iso_st, w_);
       } else if (cand_eta < 1.3) {
 	h_diff_1p3_EA.Fill(neut_iso - correction_EA, w_);
 	h_diff_1p3_dB.Fill(neut_iso - correction_dB, w_);
 	h_diff_1p3_EA_st.Fill(neut_iso_st - correction_EA_st, w_);
 	h_diff_1p3_dB_st.Fill(neut_iso_st - correction_dB_st, w_);
+	p_npv_1p3_EA.Fill(nPUvertices, correction_EA, w_);
+	p_npv_1p3_dB.Fill(nPUvertices, correction_dB, w_);
+	p_npv_1p3_EA_st.Fill(nPUvertices, correction_EA_st, w_);
+	p_npv_1p3_dB_st.Fill(nPUvertices, correction_dB_st, w_);
+	p_npv_1p3_neut.Fill(nPUvertices, neut_iso, w_);
+	p_npv_1p3_neut_st.Fill(nPUvertices, neut_iso_st, w_);
       } else if (cand_eta < 2.0) {
 	h_diff_2p0_EA.Fill(neut_iso - correction_EA, w_);
 	h_diff_2p0_dB.Fill(neut_iso - correction_dB, w_);
 	h_diff_2p0_EA_st.Fill(neut_iso_st - correction_EA_st, w_);
 	h_diff_2p0_dB_st.Fill(neut_iso_st - correction_dB_st, w_);
+	p_npv_2p0_EA.Fill(nPUvertices, correction_EA, w_);
+	p_npv_2p0_dB.Fill(nPUvertices, correction_dB, w_);
+	p_npv_2p0_EA_st.Fill(nPUvertices, correction_EA_st, w_);
+	p_npv_2p0_dB_st.Fill(nPUvertices, correction_dB_st, w_);
+	p_npv_2p0_neut.Fill(nPUvertices, neut_iso, w_);
+	p_npv_2p0_neut_st.Fill(nPUvertices, neut_iso_st, w_);
       } else if (cand_eta < 2.2) {
 	h_diff_2p2_EA.Fill(neut_iso - correction_EA, w_);
 	h_diff_2p2_dB.Fill(neut_iso - correction_dB, w_);
 	h_diff_2p2_EA_st.Fill(neut_iso_st - correction_EA_st, w_);
 	h_diff_2p2_dB_st.Fill(neut_iso_st - correction_dB_st, w_);
+	p_npv_2p2_EA.Fill(nPUvertices, correction_EA, w_);
+	p_npv_2p2_dB.Fill(nPUvertices, correction_dB, w_);
+	p_npv_2p2_EA_st.Fill(nPUvertices, correction_EA_st, w_);
+	p_npv_2p2_dB_st.Fill(nPUvertices, correction_dB_st, w_);
+	p_npv_2p2_neut.Fill(nPUvertices, neut_iso, w_);
+	p_npv_2p2_neut_st.Fill(nPUvertices, neut_iso_st, w_);
       } else if (cand_eta < 2.5) {
 	h_diff_2p5_EA.Fill(neut_iso - correction_EA, w_);
 	h_diff_2p5_dB.Fill(neut_iso - correction_dB, w_);
 	h_diff_2p5_EA_st.Fill(neut_iso_st - correction_EA_st, w_);
 	h_diff_2p5_dB_st.Fill(neut_iso_st - correction_dB_st, w_);
+	p_npv_2p5_EA.Fill(nPUvertices, correction_EA, w_);
+	p_npv_2p5_dB.Fill(nPUvertices, correction_dB, w_);
+	p_npv_2p5_EA_st.Fill(nPUvertices, correction_EA_st, w_);
+	p_npv_2p5_dB_st.Fill(nPUvertices, correction_dB_st, w_);
+	p_npv_2p5_neut.Fill(nPUvertices, neut_iso, w_);
+	p_npv_2p5_neut_st.Fill(nPUvertices, neut_iso_st, w_);
       } // Eta-slicing histogram filling block      
     } // Muon loop    
   } // Event Loop
@@ -309,10 +389,51 @@ void PileupCorrection::ScanChain (TTree * tree, const char* outname, int MaxEven
   // TProfiles
   p_pt_EA.Write();
   p_pt_dB.Write();
-  p_npv_EA.Write();
-  p_npv_dB.Write();
   p_npv_rho_all.Write();
   p_npv_rho_ctr.Write();
+
+  p_npv_incl_EA.Write();
+  p_npv_incl_dB.Write();
+  p_npv_incl_neut.Write();
+  p_npv_incl_EA_st.Write();
+  p_npv_incl_dB_st.Write();
+  p_npv_incl_neut_st.Write();
+
+  p_npv_0p8_EA.Write();
+  p_npv_1p3_EA.Write();
+  p_npv_2p0_EA.Write();
+  p_npv_2p2_EA.Write();
+  p_npv_2p5_EA.Write();
+
+  p_npv_0p8_dB.Write();
+  p_npv_1p3_dB.Write();
+  p_npv_2p0_dB.Write();
+  p_npv_2p2_dB.Write();
+  p_npv_2p5_dB.Write();
+
+  p_npv_0p8_EA_st.Write();
+  p_npv_1p3_EA_st.Write();
+  p_npv_2p0_EA_st.Write();
+  p_npv_2p2_EA_st.Write();
+  p_npv_2p5_EA_st.Write();
+
+  p_npv_0p8_dB_st.Write();
+  p_npv_1p3_dB_st.Write();
+  p_npv_2p0_dB_st.Write();
+  p_npv_2p2_dB_st.Write();
+  p_npv_2p5_dB_st.Write();
+
+  p_npv_0p8_neut.Write();
+  p_npv_1p3_neut.Write();
+  p_npv_2p0_neut.Write();
+  p_npv_2p2_neut.Write();
+  p_npv_2p5_neut.Write();
+
+  p_npv_0p8_neut_st.Write();
+  p_npv_1p3_neut_st.Write();
+  p_npv_2p0_neut_st.Write();
+  p_npv_2p2_neut_st.Write();
+  p_npv_2p5_neut_st.Write();  
 
   h_npv_over_EA.Write();
   h_npv_over_dB.Write();
