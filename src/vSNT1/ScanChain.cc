@@ -73,6 +73,10 @@ void PileupCorrection::ScanChain (TTree * tree, const char* outname, int MaxEven
   TProfile p_npv_2p2_neut_st("p_npv_2p2_neut_st","Neutral Isolation by N_{PV}",nPUbins,PUmin,PUmax);
   TProfile p_npv_2p5_neut_st("p_npv_2p5_neut_st","Neutral Isolation by N_{PV}",nPUbins,PUmin,PUmax);
 
+  TProfile p_npv_incl_NImEA("p_npv_incl_NImEA","Average Neut MiniIso - EA by N_{PV}",nPUbins,PUmin,PUmax);
+  TProfile p_npv_incl_NImEA_st("p_npv_incl_NImEA_st","Average Neut Iso - EA by N_{PV}",nPUbins,PUmin,PUmax);
+  
+
   TH1F h_npv_over_EA("h_npv_over_EA","Fraction of EA Overcorrections by N_{PV}",nPUbins,PUmin,PUmax);
   TH1F h_npv_over_dB("h_npv_over_dB","Fraction of #Delta#beta Overcorrections by N_{PV}",nPUbins,PUmin,PUmax);
   // use nEntriesByNpv array defined below as denom
@@ -251,6 +255,9 @@ void PileupCorrection::ScanChain (TTree * tree, const char* outname, int MaxEven
       p_npv_incl_dB_st.Fill(nPUvertices, correction_dB_st, w_);
       p_npv_incl_neut.Fill(nPUvertices, neut_iso, w_);
       p_npv_incl_neut_st.Fill(nPUvertices, neut_iso_st, w_);
+
+      p_npv_incl_NImEA.Fill(nPUvertices, neut_iso - correction_EA, w_);
+      p_npv_incl_NImEA_st.Fill(nPUvertices, neut_iso_st - correction_EA_st, w_);
 
       if (cand_eta < 0.8) {
 	h_diff_0p8_EA.Fill(neut_iso - correction_EA, w_);
@@ -434,6 +441,9 @@ void PileupCorrection::ScanChain (TTree * tree, const char* outname, int MaxEven
   p_npv_2p0_neut_st.Write();
   p_npv_2p2_neut_st.Write();
   p_npv_2p5_neut_st.Write();  
+
+  p_npv_incl_NImEA.Write();
+  p_npv_incl_NImEA_st.Write();
 
   h_npv_over_EA.Write();
   h_npv_over_dB.Write();

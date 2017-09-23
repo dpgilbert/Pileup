@@ -35,22 +35,29 @@ def Normalize (hist):
 
 tf = ROOT.TFile("../src/output/hists.root")
 
-h_all_rhos_ctr = GetHist(tf,"h_all_rhos_ctr", title="Central-Neutral #rho Distribution;#rho (GeV);Fraction")
-Normalize(h_all_rhos_ctr)
+# TProfiles
+p_pt_EA = GetHist(tf, "p_pt_EA", overflow=False, title="#DeltaR=0.3 EA Corrections by p_{T} of Candidate;Muon p_{T} (GeV);Average Absolute EA Correction (GeV)")
+p_pt_dB = GetHist(tf, "p_pt_dB", overflow=False, title="#DeltaR=0.3 #Delta#beta Corrections by p_{T} of Candidate;Muon p_{T} (GeV);Average Absolute #Delta#beta Correction (GeV)")
+p_npv_rhos_all = GetHist(tf, "p_npv_rho_all", overflow=False, title="#rho as Function of N_{PV};Number of Pileup Vertices;Average #rho (GeV)",color=ROOT.kRed)
+p_npv_rhos_ctr = GetHist(tf, "p_npv_rho_ctr", overflow=False)
+
+h_npv_over_EA = GetHist(tf, "h_npv_over_EA", overflow=False, title="Fraction of Overcorrections by N_{PV} (Neut Iso < Correction);Number of Pileup Vertices;Overcorrected Fraction",color=ROOT.kRed)
+h_npv_over_dB = GetHist(tf, "h_npv_over_dB", overflow=False)
 
 ########
 # Mini #
 ########
 
-h_all_EAs_mini = GetHist(tf, "h_all_EAs_mini")
-integral = Normalize(h_all_EAs_mini)
-h_all_EAs_mini.SetTitle("All Mini Effective Areas ("+str(integral)+" muons);Effective Area;Fraction")
+h_all_rhos_ctr = GetHist(tf,"h_all_rhos_ctr", title="Central-Neutral #rho Distribution;#rho (GeV);Fraction")
+Normalize(h_all_rhos_ctr)
 
-h_median_bug_mini = GetHist(tf, "h_median_bug_mini", overflow=False,color=ROOT.kRed)
-h_median_nobug_mini = GetHist(tf, "h_median_nobug_mini", overflow=False, title="Median Bugged Mini PU Correction;N_{PV};PUCorrection (GeV)")
-# rescale by factor equal to number of samples merged
-h_median_bug_mini.Scale(1./269.)
-h_median_nobug_mini.Scale(1./269.)
+h_all_EAs = GetHist(tf, "h_all_EAs")
+integral = Normalize(h_all_EAs)
+h_all_EAs.SetTitle("All Mini Effective Areas ("+str(integral)+" muons);Effective Area;Fraction")
+
+h_median_EA = GetHist(tf, "h_median_EA", overflow=False)
+h_median_dB = GetHist(tf, "h_median_dB", overflow=False, title="Median Corrections as Function of N_{PV};N_{PV};Median Absolute MiniIso Correction (GeV)", color=ROOT.kRed)
+
 
 h_all_EAcorrs = GetHist(tf, "h_all_EAcorrs")
 h_all_dBcorrs = GetHist(tf, "h_all_dBcorrs")
