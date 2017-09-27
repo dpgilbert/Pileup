@@ -171,8 +171,10 @@ void PileupCorrection::ScanChain (TTree * tree, const char* outname, int MaxEven
     tree->LoadTree(event);
     cms3.GetEntry(event);
     //    CMS3::progress(event, nEvents);
-
-    const int nPUvertices = cms3.puInfo_nPUvertices().at(0);
+    
+    // Fixed from 0 after SNT meeting per Slava's discovery that 0 = 12 bunch crossings
+    // prior to current bunch cross
+    const int nPUvertices = cms3.puInfo_nPUvertices().at(12);
     const float rho_ctr = cms3.evt_fixgridfastjet_centralneutral_rho();
     const float rho_all = cms3.evt_fixgridfastjet_all_rho();
     //const float w_ = cms3.evt_scale1fb();

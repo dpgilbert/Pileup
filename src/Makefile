@@ -63,8 +63,8 @@ $(LIB):	$(DICT) $(OBJECTS)
 	echo "$(LINKER) -shared -o $@ $(OBJECTS) $(DICT) $(LINKERFLAGS)"; \
 	$(LINKER) -shared -o $@ $(OBJECTS) $(DICT) $(LINKERFLAGS)
 
-LinkDef_out.cxx: LinkDef.h
-	$(QUIET) echo "Making CINT dictionaries"; \
+#LinkDef_out.cxx: LinkDef.h
+#	$(QUIET) echo "Making CINT dictionaries"; \
 	rootcint -f LinkDef_out.cc -c -p $(DICTINCLUDE)  LinkDef.h; \
 	cat LinkDef_out.cc > LinkDef_out.cxx; rm LinkDef_out.cc
 
